@@ -2,32 +2,34 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 )
 
 func main() {
 	introduction()
-	Options()
+	for {
+		Options()
 
-	comand := InputComand()
+		comand := InputComand()
 
-	switch comand {
-	case 1:
-		fmt.Println("Iniciando monitoramento")
-		os.Exit(0)
-	case 2:
-		fmt.Println("Adicione ou remova os valores")
-		os.Exit(0)
-	case 3:
-		fmt.Println("Encerrando programa")
-		os.Exit(0)
-	default:
-		fmt.Print("Comando inválido")
-		os.Exit(0)
+		switch comand {
+		case 1:
+			initMonitoring()
+		case 2:
+			fmt.Println("Adicione ou remova os valores")
+			os.Exit(0)
+		case 3:
+			fmt.Println("Encerrando programa")
+			os.Exit(0)
+		default:
+			fmt.Print("Comando inválido")
+			os.Exit(0)
+		}
 	}
-
 }
 
+// display options
 func Options() {
 	fmt.Println("Escolha a opção desejada abaixo")
 
@@ -36,16 +38,35 @@ func Options() {
 	fmt.Println("3- Fechar programa")
 }
 
+// just print the introduction
 func introduction() {
 	nome := "Renan"
 	version := 1.0
-	fmt.Print("Projeto feito por:", nome)
-	fmt.Print("Versao:", version)
+	fmt.Println("Projeto feito por:", nome)
+	fmt.Println("Versao:", version)
 }
 
+// recieve the input for the user
 func InputComand() int {
 	var comand int
 	fmt.Scan(&comand)
 
 	return comand
+}
+
+func initMonitoring() {
+	fmt.Println("Iniciando monitoramento")
+
+	site := "https://random-status-code.herokuapp.com"
+
+	resp, error := http.Get(site)
+
+	if resp.StatusCode == 200 {
+		fmt.Println("Site ativo")
+	} else {
+		fmt.Println("Site com problemas:", resp.StatusCode)
+	}
+
+	fmt.Print(error)
+
 }
