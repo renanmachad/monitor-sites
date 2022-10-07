@@ -8,6 +8,7 @@ import (
 
 func main() {
 	introduction()
+
 	for {
 		Options()
 
@@ -57,16 +58,21 @@ func InputComand() int {
 func initMonitoring() {
 	fmt.Println("Iniciando monitoramento")
 
-	site := "https://random-status-code.herokuapp.com"
+	// slice of sites to monitoring
+	sites := []string{"https://wavetech-st.com", "https://dynamox.net.com", "https://random-status-code.herokuapp.com/"}
 
-	resp, error := http.Get(site)
+	// map the slice of websites
+	for i, site := range sites {
+		fmt.Println(i)
+		resp, error := http.Get(site)
 
-	if resp.StatusCode == 200 {
-		fmt.Println("Site ativo")
-	} else {
-		fmt.Println("Site com problemas:", resp.StatusCode)
+		if resp.StatusCode == 200 {
+			fmt.Println("Site ativo")
+		} else {
+			fmt.Println("Site com problemas:", resp.StatusCode)
+		}
+
+		fmt.Print(error)
 	}
-
-	fmt.Print(error)
 
 }
